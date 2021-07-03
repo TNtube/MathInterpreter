@@ -31,52 +31,50 @@ bool isDigit(char character)
 }
 
 
-
-
 Lexer::Lexer(std::string & txt){
     text = txt;
-    actual = text.begin();
     tokens = {};
 }
 
 
-void Lexer::next() {
+void Lexer::next(std::string::iterator & actual) {
     actual++;
 }
 
 
 std::vector<Token> Lexer::genTokens() {
+    auto actual = text.begin();
     while(actual != text.end()) {
 
         if (isSpace(*actual)) {
-            next();
+            next(actual);
         }
         else if (*actual == '.' || isDigit(*actual)) {
-            tokens.push_back(genNum());
+            tokens.push_back(genNum(actual));
         }
         else if (*actual == '+') {
             tokens.push_back(Token{TokenID::PLUS});
-            next();
+            next(actual);
         }
         else if (*actual == '-') {
             tokens.push_back(Token{TokenID::MINUS});
-            next();
+            next(actual);
         }
         else if (*actual == '*') {
             tokens.push_back(Token{TokenID::MULT});
-            next();
+            next(actual);
         }
         else if (*actual == '/') {
             tokens.push_back(Token{TokenID::DIV});
-            next();
+            next(actual);
         }
         else if (*actual == '(') {
             tokens.push_back(Token{TokenID::LPAR});
-            next();
+            next(actual);
         }
         else if (*actual == ')') {
             tokens.push_back(Token{TokenID::RPAR});
-            next();
+            next(actual);
         }
         else {
             throw std::runtime_error(
@@ -88,7 +86,7 @@ std::vector<Token> Lexer::genTokens() {
     return tokens;
 }
 
-Token Lexer::genNum() {
+Token Lexer::genNum(std::string::iterator & actual) {
     std::string num {};
     int countPoint {};
 
@@ -100,7 +98,7 @@ Token Lexer::genNum() {
             }
         }
         num.push_back(*actual);
-        next();
+        next(actual);
     }
 
     if (num.front() == '.') {

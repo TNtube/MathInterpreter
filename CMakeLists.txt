@@ -3,4 +3,4 @@ project(MathInterpreter)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(MathInterpreter main.cpp tokens.h lexer.cpp lexer.h)
+add_executable(MathInterpreter main.cpp tokens.h lexer.cpp lexer.h nodes.h)

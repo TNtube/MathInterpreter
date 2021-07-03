@@ -11,10 +11,9 @@
 class Lexer {
     private:
         std::string text;
-        std::string::iterator actual;
         std::vector<Token> tokens;
-        void next();
-        Token genNum();
+        static void next(std::string::iterator & actual);
+        Token genNum(std::string::iterator & actual);
 
     public:
         std::vector<Token> genTokens();
