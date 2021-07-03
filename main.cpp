@@ -6,9 +6,7 @@ int main() {
     std::string entry {};
     while(true){
         std::cout << ">";
-        std::cin >> entry;
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::getline(std::cin, entry);
         if(entry == "quit"){
             break;
         }
@@ -21,12 +19,6 @@ int main() {
         catch (std::runtime_error & error){
             std::cout << error.what() << std::endl;
             continue;
-        }
-
-        // Debugging
-
-        for(auto & token : tokenizedEntry){
-            std::cout << token.type << " : " << token.value << std::endl;
         }
 
 

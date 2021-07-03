@@ -21,8 +21,6 @@ void Lexer::next() {
 
 std::vector<Token> Lexer::genTokens() {
     while(actual != text.end()) {
-        // Debugging (using breakpoints)
-        std::string foo {*actual};
 
         if (std::isspace(*actual)) {
             next();
@@ -44,6 +42,14 @@ std::vector<Token> Lexer::genTokens() {
         }
         else if (*actual == '/') {
             tokens.push_back(Token{TokenID::DIV});
+            next();
+        }
+        else if (*actual == '(') {
+            tokens.push_back(Token{TokenID::LPAR});
+            next();
+        }
+        else if (*actual == ')') {
+            tokens.push_back(Token{TokenID::RPAR});
             next();
         }
         else {
