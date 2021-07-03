@@ -7,6 +7,32 @@
 #include <iostream>
 
 
+
+bool isSpace(char character)
+{
+    switch (character)
+    {
+        case ' ':
+        case '\f':
+        case '\n':
+        case '\r':
+        case '\t':
+        case '\v':
+            return true;
+
+        default:
+            return false;
+    }
+}
+
+bool isDigit(char character)
+{
+    return (character >= '0' && character <= '9');
+}
+
+
+
+
 Lexer::Lexer(std::string & txt){
     text = txt;
     actual = text.begin();
@@ -22,10 +48,10 @@ void Lexer::next() {
 std::vector<Token> Lexer::genTokens() {
     while(actual != text.end()) {
 
-        if (std::isspace(*actual)) {
+        if (isSpace(*actual)) {
             next();
         }
-        else if (*actual == '.' || isdigit(*actual)) {
+        else if (*actual == '.' || isDigit(*actual)) {
             tokens.push_back(genNum());
         }
         else if (*actual == '+') {
