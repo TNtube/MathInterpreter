@@ -6,18 +6,18 @@
 #define MATHINTERPRETER_LEXER_H
 #include <string>
 #include "tokens.h"
-#include <list>
+#include <vector>
 
 class Lexer {
     private:
         std::string text;
         std::string::iterator actual;
-        std::list<Token> tokens;
+        std::vector<Token> tokens;
         void next();
         Token genNum();
 
     public:
-        std::list<Token> genTokens();
+        std::vector<Token> genTokens();
         explicit Lexer(std::string & text);
 };
 

@@ -14,7 +14,7 @@ int main() {
         }
 
         Lexer lexer(entry);
-        std::list<Token> tokenizedEntry;
+        std::vector<Token> tokenizedEntry;
         try{
             tokenizedEntry = lexer.genTokens();
         }

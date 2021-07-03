@@ -19,7 +19,7 @@ void Lexer::next() {
 }
 
 
-std::list<Token> Lexer::genTokens() {
+std::vector<Token> Lexer::genTokens() {
     while(actual != text.end()) {
         // Debugging (using breakpoints)
         std::string foo {*actual};
