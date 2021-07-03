@@ -21,9 +21,10 @@ void Lexer::next() {
 
 std::list<Token> Lexer::genTokens() {
     while(actual != text.end()) {
+        // Debugging (using breakpoints)
         std::string foo {*actual};
 
-        if (std::isspace(*actual) && *actual != '\n') {
+        if (std::isspace(*actual)) {
             next();
         }
         else if (*actual == '.' || isdigit(*actual)) {

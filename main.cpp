@@ -23,6 +23,8 @@ int main() {
             continue;
         }
 
+        // Debugging
+
         for(auto & token : tokenizedEntry){
             std::cout << token.type << " : " << token.value << std::endl;
         }
