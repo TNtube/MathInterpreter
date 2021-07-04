@@ -31,10 +31,10 @@ bool isDigit(char character)
 }
 
 
-Lexer::Lexer(std::string & txt){
-    text = txt;
-    tokens = {};
-}
+Lexer::Lexer(std::string & txt)
+        : text(txt)
+        , tokens({})
+{}
 
 
 void Lexer::next(std::string::iterator & actual) {
@@ -53,27 +53,31 @@ std::vector<Token> Lexer::genTokens() {
             tokens.push_back(genNum(actual));
         }
         else if (*actual == '+') {
-            tokens.push_back(Token{TokenID::PLUS});
+            tokens.push_back(Token{TokenID::T_ADD});
             next(actual);
         }
         else if (*actual == '-') {
-            tokens.push_back(Token{TokenID::MINUS});
+            tokens.push_back(Token{TokenID::T_SUB});
             next(actual);
         }
         else if (*actual == '*') {
-            tokens.push_back(Token{TokenID::MULT});
+            tokens.push_back(Token{TokenID::T_MUL});
             next(actual);
         }
         else if (*actual == '/') {
-            tokens.push_back(Token{TokenID::DIV});
+            tokens.push_back(Token{TokenID::T_DIV});
+            next(actual);
+        }
+        else if (*actual == '^') {
+            tokens.push_back(Token{TokenID::T_POW});
             next(actual);
         }
         else if (*actual == '(') {
-            tokens.push_back(Token{TokenID::LPAR});
+            tokens.push_back(Token{TokenID::T_LPAR});
             next(actual);
         }
         else if (*actual == ')') {
-            tokens.push_back(Token{TokenID::RPAR});
+            tokens.push_back(Token{TokenID::T_RPAR});
             next(actual);
         }
         else {
@@ -108,6 +112,6 @@ Token Lexer::genNum(std::string::iterator & actual) {
         num.push_back('0');
     }
 
-    return Token{TokenID::NUM, num};
+    return Token{TokenID::T_NUM, num};
 }
 

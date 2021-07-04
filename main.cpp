@@ -21,6 +21,10 @@ int main() {
             continue;
         }
 
+        for(const auto & token : tokenizedEntry){
+            std::cout << token.type << " : " << token.value << std::endl;
+        }
+
 
     }
     return 0;

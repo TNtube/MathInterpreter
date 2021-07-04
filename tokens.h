@@ -8,13 +8,14 @@
 
 
 enum TokenID {
-    NUM,
-    PLUS,
-    MINUS,
-    MULT,
-    DIV,
-    LPAR,
-    RPAR
+    T_NUM,
+    T_ADD,
+    T_SUB,
+    T_MUL,
+    T_DIV,
+    T_POW,
+    T_LPAR,
+    T_RPAR
 };
 
 struct Token{
