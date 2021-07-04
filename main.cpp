@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "lexer.h"
+#include "parser.h"
 
 int main() {
     std::string entry {};
@@ -21,9 +22,10 @@ int main() {
             continue;
         }
 
-        for(const auto & token : tokenizedEntry){
-            std::cout << token.type << " : " << token.value << std::endl;
-        }
+        Parser parser(tokenizedEntry);
+        Node nodes = parser.parse();
+
+        std::cout << &nodes.node1 << std::endl;
 
 
     }

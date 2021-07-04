@@ -5,8 +5,11 @@
 #ifndef MATHINTERPRETER_NODES_H
 #define MATHINTERPRETER_NODES_H
 
+#include <string>
 
-enum NodeOpKind {
+
+enum NodeKind {
+    N_NUM,
     N_ADD,
     N_SUB,
     N_MUL,
@@ -16,18 +19,11 @@ enum NodeOpKind {
     N_POWER
 };
 
-struct Node {};
-
-
-struct NumberNode : Node {
-    int value;
-};
-
-struct OpNode : Node {
-    Node node1;
-    Node node2;
-    NodeOpKind type;
-    OpNode(Node n1, Node n2, NodeOpKind nType) : node1(n1), node2(n2), type(nType) {}
+struct Node{
+    Node* node1 = nullptr;
+    Node* node2 = nullptr;
+    NodeKind type;
+    std::string value;
 };
 
 #endif //MATHINTERPRETER_NODES_H
