@@ -40,6 +40,10 @@ double Interpreter::pow(std::unique_ptr<Node> &node) {
     return std::pow(eval(node->node1), eval(node->node2));
 }
 
+double Interpreter::fact(std::unique_ptr<Node> &node) {
+    return std::tgamma(eval(node->node1) + 1);
+}
+
 double Interpreter::eval(std::unique_ptr<Node> & node) {
     switch (node->type) {
         case N_NUM:
@@ -58,9 +62,8 @@ double Interpreter::eval(std::unique_ptr<Node> & node) {
             return minus(node);
         case N_POW:
             return pow(node);
-        default:
-            std::cout << node->node1->value << "\n";
-            return eval(node->node1);
+        case N_FACT:
+            return fact(node);
     }
 }
 

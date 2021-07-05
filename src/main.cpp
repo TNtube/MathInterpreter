@@ -10,11 +10,7 @@ void displayTree(std::unique_ptr<Node> & node) {
     if(node->node1 != nullptr) {
         displayTree(node->node1);
     }
-    if (node->type != N_DEFAULT) {
-        std::cout << " " << node->value << " ";
-    } else {
-        std::cout << " DEFAULT ";
-    }
+    std::cout << " " << node->value << " ";
     if(node->node2 != nullptr) {
         displayTree(node->node2);
     }

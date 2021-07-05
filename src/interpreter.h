@@ -18,6 +18,7 @@ class Interpreter {
         static double plus(std::unique_ptr<Node> & node);
         static double minus(std::unique_ptr<Node> & node);
         static double pow(std::unique_ptr<Node> & node);
+        static double fact(std::unique_ptr<Node> & node);
 
     public:
         static double eval(std::unique_ptr<Node> & node);

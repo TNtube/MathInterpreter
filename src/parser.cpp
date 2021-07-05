@@ -78,10 +78,21 @@ std::unique_ptr<Node> Parser::factor(std::vector<Token>::iterator & actual) {
             error("Missing Closing Parenthesis");
         }
         next(actual);
+
+        if (actual->type == T_FACT) {
+            result = std::make_unique<Node>(result, N_FACT, "!");
+            next(actual);
+        }
+
         return result;
     }
     else if (token->type == TokenID::T_NUM) {
         next(actual);
+        if (actual->type == T_FACT) {
+            auto result = std::make_unique<Node>(N_NUM, token->value);
+            next(actual);
+            return std::make_unique<Node>(result, N_FACT, "!");
+        }
         return std::make_unique<Node>(N_NUM, token->value);
     }
     else if (token->type == TokenID::T_ADD) {

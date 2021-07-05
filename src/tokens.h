@@ -14,6 +14,7 @@ enum TokenID {
     T_MUL,
     T_DIV,
     T_POW,
+    T_FACT,
     T_LPAR,
     T_RPAR
 };

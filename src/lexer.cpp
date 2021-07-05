@@ -4,8 +4,6 @@
 
 #include "lexer.h"
 #include <stdexcept>
-#include <iostream>
-
 
 
 bool isSpace(char character)
@@ -78,6 +76,10 @@ std::vector<Token> Lexer::genTokens() {
         }
         else if (*actual == ')') {
             tokens.push_back(Token{TokenID::T_RPAR, ")"});
+            next(actual);
+        }
+        else if (*actual == '!') {
+            tokens.push_back(Token{TokenID::T_FACT, "!"});
             next(actual);
         }
         else {

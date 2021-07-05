@@ -19,7 +19,7 @@ enum NodeKind {
     N_PLUS,
     N_MINUS,
     N_POW,
-    N_DEFAULT
+    N_FACT
 };
 
 struct Node{
@@ -34,6 +34,8 @@ struct Node{
             node1(nullptr), node2(nullptr), type(kind), value(std::move(val)){}
 
     Node(std::unique_ptr<Node>&& node, NodeKind kind, std::string val):
+            node1(std::move(node)), node2(nullptr), type(kind), value(std::move(val)){}
+    Node(std::unique_ptr<Node>& node, NodeKind kind, std::string val):
             node1(std::move(node)), node2(nullptr), type(kind), value(std::move(val)){}
 };
 
