@@ -5,107 +5,94 @@
 #include "parser.h"
 #include <stdexcept>
 
-void Parser::parse(std::unique_ptr<Node> & result) {
+std::unique_ptr<Node> Parser::parse() {
     auto actual = tokenVec.begin();
     if (actual == tokenVec.end()) {
         error("No expression");
     }
 
-    expr(actual, result);
+    std::unique_ptr<Node> result = expr(actual);
 
     if(actual != tokenVec.end()){
         error("Syntax Error");
     }
+    return result;
 }
 
-void Parser::expr(std::vector<Token>::iterator & actual, std::unique_ptr<Node> & node) {
-    std::unique_ptr<Node> n1{new Node};
-    node->node1 = std::move(n1);
-    term(actual, node->node1);
-
-    std::unique_ptr<Node> n2{new Node};
-    node->node2 = std::move(n2);
-
-
+std::unique_ptr<Node> Parser::expr(std::vector<Token>::iterator & actual) {
+    std::unique_ptr<Node> result = term(actual);
 
     while (actual != tokenVec.end() && (actual->type == T_ADD || actual->type == T_SUB)){
         auto token = actual;
         if (actual->type == T_ADD) {
             next(actual);
-            term(actual, node->node2);
-            node->type = N_ADD;
-            node->value = token->value;
-
+            result = std::make_unique<Node>(std::move(result), term(actual), N_ADD, token->value);
         } else {
             next(actual);
-            term(actual, node->node2);
-            node->type = N_SUB;
-            node->value = token->value;
+            result = std::make_unique<Node>(std::move(result), term(actual), N_SUB, token->value);
         }
     }
+    return result;
 }
 
-void Parser::term(std::vector<Token>::iterator & actual, std::unique_ptr<Node> & node) {
-    std::unique_ptr<Node> n1{new Node};
-    node->node1 = std::move(n1);
-    factor(actual, node->node1);
-
-    std::unique_ptr<Node> n2{new Node};
-    node->node2 = std::move(n2);
+std::unique_ptr<Node> Parser::term(std::vector<Token>::iterator & actual) {
+    std::unique_ptr<Node> result = pow(actual);
 
 
     while (actual != tokenVec.end() && (actual->type == T_MUL || actual->type == T_DIV)){
         auto token = actual;
+
         if (actual->type == T_MUL) {
             next(actual);
-            factor(actual, node->node2);
-            node->type = N_MUL;
-            node->value = token->value;
+            return std::make_unique<Node>(std::move(result), pow(actual), N_MUL, token->value);
 
         } else {
             next(actual);
-            factor(actual, node->node2);
-            node->type = N_DIV;
-            node->value = token->value;
+            result = std::make_unique<Node>(std::move(result), pow(actual), N_MUL, token->value);
         }
     }
+    return result;
 }
 
-void Parser::factor(std::vector<Token>::iterator & actual, std::unique_ptr<Node> & node) {
+std::unique_ptr<Node> Parser::pow(std::vector<Token>::iterator & actual) {
+    std::unique_ptr<Node> result = factor(actual);
+
+
+    while (actual != tokenVec.end() && actual->type == T_POW){
+        auto token = actual;
+        next(actual);
+        return std::make_unique<Node>(std::move(result), factor(actual), N_POW, token->value);
+    }
+    return result;
+}
+
+
+std::unique_ptr<Node> Parser::factor(std::vector<Token>::iterator & actual) {
     auto token = actual;
 
     if (token->type == TokenID::T_LPAR){
         next(actual);
-        expr(actual, node);
+        auto result = expr(actual);
+
         if (actual->type != TokenID::T_RPAR){
             error("Missing Closing Parenthesis");
         }
         next(actual);
+        return result;
     }
     else if (token->type == TokenID::T_NUM) {
         next(actual);
-        node->type = N_NUM;
-        node->value = token->value;
+        return std::make_unique<Node>(N_NUM, token->value);
     }
     else if (token->type == TokenID::T_ADD) {
         next(actual);
-        std::unique_ptr<Node> n1{new Node};
-        node->node1 = std::move(n1);
-        factor(actual, node->node1);
-        node->type = N_PLUS;
-        node->value = token->value;
+        return std::make_unique<Node>(factor(actual), N_PLUS, "+");
     }
     else if (token->type == TokenID::T_SUB) {
         next(actual);
-        std::unique_ptr<Node> n1{new Node};
-        node->node1 = std::move(n1);
-        factor(actual, node->node1);
-        node->type = N_MINUS;
-        node->value = token->value;
-    } else {
-        error("Invalid Syntax !");
+        return std::make_unique<Node>(factor(actual), N_MINUS, "-");
     }
-
+    throw std::runtime_error("Invalid Syntax");
 }
 
 void Parser::next(std::vector<Token>::iterator & actual) {

@@ -2,6 +2,24 @@
 #include <string>
 #include "lexer.h"
 #include "parser.h"
+#include "interpreter.h"
+
+
+void displayTree(std::unique_ptr<Node> & node) {
+    std::cout << "(";
+    if(node->node1 != nullptr) {
+        displayTree(node->node1);
+    }
+    if (node->type != N_DEFAULT) {
+        std::cout << " " << node->value << " ";
+    } else {
+        std::cout << " DEFAULT ";
+    }
+    if(node->node2 != nullptr) {
+        displayTree(node->node2);
+    }
+    std::cout << ")";
+}
 
 int main() {
     std::string entry {};
@@ -18,14 +36,24 @@ int main() {
             tokenizedEntry = lexer.genTokens();
         }
         catch (std::runtime_error & error){
-            std::cout << error.what() << std::endl;
+            std::cout << "Error : " << error.what() << std::endl;
             continue;
         }
 
+        std::unique_ptr<Node> node;
         Parser parser(tokenizedEntry);
-        std::unique_ptr<Node> node {new Node};
         try {
-            parser.parse(node);
+            node = parser.parse();
+        } catch (std::runtime_error & error) {
+            std::cout << "Error : " << error.what() << "\n";
+            continue;
+        }
+
+        displayTree(node);
+        std::cout << "\n";
+
+        try {
+            std::cout << Interpreter::eval(node) << "\n";
         } catch (std::runtime_error & error) {
             std::cout << "Error : " << error.what() << "\n";
             continue;

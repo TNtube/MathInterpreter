@@ -7,6 +7,7 @@
 
 #include <string>
 #include <memory>
+#include <utility>
 
 
 enum NodeKind {
@@ -17,7 +18,7 @@ enum NodeKind {
     N_DIV,
     N_PLUS,
     N_MINUS,
-    N_POWER,
+    N_POW,
     N_DEFAULT
 };
 
@@ -26,7 +27,14 @@ struct Node{
     std::unique_ptr<Node> node2;
     NodeKind type;
     std::string value;
-    Node() : node1(), node2(), type(N_DEFAULT), value(){}
+    Node(std::unique_ptr<Node>&& left, std::unique_ptr<Node>&& right, NodeKind kind, std::string val):
+            node1(std::move(left)), node2(std::move(right)), type(kind), value(std::move(val)) {}
+
+    Node(NodeKind kind, std::string val):
+            node1(nullptr), node2(nullptr), type(kind), value(std::move(val)){}
+
+    Node(std::unique_ptr<Node>&& node, NodeKind kind, std::string val):
+            node1(std::move(node)), node2(nullptr), type(kind), value(std::move(val)){}
 };
 
 #endif //MATHINTERPRETER_NODES_H
