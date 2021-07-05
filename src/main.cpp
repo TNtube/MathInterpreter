@@ -45,9 +45,6 @@ int main() {
             continue;
         }
 
-        displayTree(node);
-        std::cout << "\n";
-
         try {
             std::cout << Interpreter::eval(node) << "\n";
         } catch (std::runtime_error & error) {
