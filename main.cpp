@@ -23,11 +23,13 @@ int main() {
         }
 
         Parser parser(tokenizedEntry);
-        Node nodes = parser.parse();
-
-        std::cout << &nodes.node1 << std::endl;
-
-
+        std::unique_ptr<Node> node {new Node};
+        try {
+            parser.parse(node);
+        } catch (std::runtime_error & error) {
+            std::cout << "Error : " << error.what() << "\n";
+            continue;
+        }
     }
     return 0;
 }

@@ -53,31 +53,31 @@ std::vector<Token> Lexer::genTokens() {
             tokens.push_back(genNum(actual));
         }
         else if (*actual == '+') {
-            tokens.push_back(Token{TokenID::T_ADD});
+            tokens.push_back(Token{TokenID::T_ADD, "+"});
             next(actual);
         }
         else if (*actual == '-') {
-            tokens.push_back(Token{TokenID::T_SUB});
+            tokens.push_back(Token{TokenID::T_SUB,"-"});
             next(actual);
         }
         else if (*actual == '*') {
-            tokens.push_back(Token{TokenID::T_MUL});
+            tokens.push_back(Token{TokenID::T_MUL, "*"});
             next(actual);
         }
         else if (*actual == '/') {
-            tokens.push_back(Token{TokenID::T_DIV});
+            tokens.push_back(Token{TokenID::T_DIV, "/"});
             next(actual);
         }
         else if (*actual == '^') {
-            tokens.push_back(Token{TokenID::T_POW});
+            tokens.push_back(Token{TokenID::T_POW, "^"});
             next(actual);
         }
         else if (*actual == '(') {
-            tokens.push_back(Token{TokenID::T_LPAR});
+            tokens.push_back(Token{TokenID::T_LPAR, "("});
             next(actual);
         }
         else if (*actual == ')') {
-            tokens.push_back(Token{TokenID::T_RPAR});
+            tokens.push_back(Token{TokenID::T_RPAR, ")"});
             next(actual);
         }
         else {

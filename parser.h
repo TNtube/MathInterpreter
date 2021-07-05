@@ -13,15 +13,15 @@
 class Parser {
     private:
         std::vector<Token> tokenVec;
-        Node expr(std::vector<Token>::iterator & actual);
-        Node term(std::vector<Token>::iterator & actual);
-        Node factor(std::vector<Token>::iterator & actual);
+        void expr(std::vector<Token>::iterator & actual, std::unique_ptr<Node> & node);
+        void term(std::vector<Token>::iterator & actual, std::unique_ptr<Node> & node);
+        void factor(std::vector<Token>::iterator & actual, std::unique_ptr<Node> & node);
         static void error(std::string const & message);
         static void next(std::vector<Token>::iterator & actual);
 
     public:
         explicit Parser(std::vector<Token> & tokens);
-        Node parse();
+        void parse(std::unique_ptr<Node> & result);
 };
 
 
