@@ -4,7 +4,6 @@
 
 #include "interpreter.h"
 #include <stdexcept>
-#include <iostream>
 #include <cmath>
 
 double Interpreter::add(std::unique_ptr<Node> & node) {
@@ -25,7 +24,7 @@ double Interpreter::div(std::unique_ptr<Node> & node) {
     if (y == 0) {
         throw std::runtime_error("Math error, can't divide by 0");
     }
-    return eval(node->node1) / eval(node->node2);
+    return x / y;
 }
 
 double Interpreter::plus(std::unique_ptr<Node> & node) {
@@ -64,6 +63,8 @@ double Interpreter::eval(std::unique_ptr<Node> & node) {
             return pow(node);
         case N_FACT:
             return fact(node);
+        default:
+            return 0;
     }
 }
 
