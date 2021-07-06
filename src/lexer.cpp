@@ -104,6 +104,9 @@ Token Lexer::genNum(std::string::iterator & actual) {
 
     std::string num {start, actual};
 
+    if (num.front() == '.' && num.size() == 1) {
+        throw std::runtime_error("Invalid Syntax");
+    }
     if (num.front() == '.') {
         num.insert(0, 1, '0');
     }
