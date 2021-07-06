@@ -6,6 +6,7 @@
 #define MATHINTERPRETER_LEXER_H
 #include <string>
 #include "tokens.h"
+#include <utility>
 #include <vector>
 
 class Lexer {
@@ -17,7 +18,9 @@ class Lexer {
 
     public:
         std::vector<Token> genTokens();
-        explicit Lexer(std::string & text);
+        explicit Lexer(std::string txt):
+                text(std::move(txt)), tokens({})
+        {}
 };
 
 

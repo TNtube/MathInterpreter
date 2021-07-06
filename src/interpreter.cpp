@@ -6,62 +6,65 @@
 #include <stdexcept>
 #include <cmath>
 
-double Interpreter::add(std::unique_ptr<Node> & node) {
-    return eval(node->node1) + eval(node->node2);
-}
 
-double Interpreter::sub(std::unique_ptr<Node> & node) {
-    return eval(node->node1) - eval(node->node2);
-}
-
-double Interpreter::mul(std::unique_ptr<Node> & node) {
-    return eval(node->node1) * eval(node->node2);
-}
-
-double Interpreter::div(std::unique_ptr<Node> & node) {
-    double x = eval(node->node1);
-    double y = eval(node->node2);
-    if (y == 0) {
-        throw std::runtime_error("Math error, can't divide by 0");
+namespace {
+    double add(std::unique_ptr<Node> & node) {
+        return Interpreter::eval(node->node1) + Interpreter::eval(node->node2);
     }
-    return x / y;
-}
 
-double Interpreter::plus(std::unique_ptr<Node> & node) {
-    return +eval(node->node1);
-}
+    double sub(std::unique_ptr<Node> & node) {
+        return Interpreter::eval(node->node1) - Interpreter::eval(node->node2);
+    }
 
-double Interpreter::minus(std::unique_ptr<Node> & node) {
-    return -eval(node->node1);
-}
+    double mul(std::unique_ptr<Node> & node) {
+        return Interpreter::eval(node->node1) * Interpreter::eval(node->node2);
+    }
 
-double Interpreter::pow(std::unique_ptr<Node> &node) {
-    return std::pow(eval(node->node1), eval(node->node2));
-}
+    double div(std::unique_ptr<Node> & node) {
+        double x = Interpreter::eval(node->node1);
+        double y = Interpreter::eval(node->node2);
+        if (!bool(y)) {
+            throw std::runtime_error("Math error, can't divide by 0");
+        }
+        return x / y;
+    }
 
-double Interpreter::fact(std::unique_ptr<Node> &node) {
-    return std::tgamma(eval(node->node1) + 1);
+    double plus(std::unique_ptr<Node> & node) {
+        return +Interpreter::eval(node->node1);
+    }
+
+    double minus(std::unique_ptr<Node> & node) {
+        return -Interpreter::eval(node->node1);
+    }
+
+    double pow(std::unique_ptr<Node> &node) {
+        return std::pow(Interpreter::eval(node->node1), Interpreter::eval(node->node2));
+    }
+
+    double fact(std::unique_ptr<Node> &node) {
+        return std::tgamma(Interpreter::eval(node->node1) + 1);
+    }
 }
 
 double Interpreter::eval(std::unique_ptr<Node> & node) {
     switch (node->type) {
-        case N_NUM:
+        case NodeKind::N_NUM:
             return std::stod(node->value);
-        case N_ADD:
+        case NodeKind::N_ADD:
             return add(node);
-        case N_SUB:
+        case NodeKind::N_SUB:
             return sub(node);
-        case N_MUL:
+        case NodeKind::N_MUL:
             return mul(node);
-        case N_DIV:
+        case NodeKind::N_DIV:
             return div(node);
-        case N_PLUS:
+        case NodeKind::N_PLUS:
             return plus(node);
-        case N_MINUS:
+        case NodeKind::N_MINUS:
             return minus(node);
-        case N_POW:
+        case NodeKind::N_POW:
             return pow(node);
-        case N_FACT:
+        case NodeKind::N_FACT:
             return fact(node);
         default:
             return 0;

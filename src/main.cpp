@@ -30,25 +30,13 @@ int main() {
         std::vector<Token> tokenizedEntry;
         try{
             tokenizedEntry = lexer.genTokens();
+            std::unique_ptr<Node> ast;
+            Parser parser(tokenizedEntry);
+            ast = parser.parse();
+            std::cout << Interpreter::eval(ast) << "\n";
         }
         catch (std::runtime_error & error){
             std::cout << "Error : " << error.what() << std::endl;
-            continue;
-        }
-
-        std::unique_ptr<Node> node;
-        Parser parser(tokenizedEntry);
-        try {
-            node = parser.parse();
-        } catch (std::runtime_error & error) {
-            std::cout << "Error : " << error.what() << "\n";
-            continue;
-        }
-
-        try {
-            std::cout << Interpreter::eval(node) << "\n";
-        } catch (std::runtime_error & error) {
-            std::cout << "Error : " << error.what() << "\n";
             continue;
         }
     }

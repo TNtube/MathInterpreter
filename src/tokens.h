@@ -7,7 +7,7 @@
 #include <string>
 
 
-enum TokenID {
+enum class TokenKind {
     T_NUM,
     T_ADD,
     T_SUB,
@@ -20,7 +20,7 @@ enum TokenID {
 };
 
 struct Token{
-    TokenID type;
+    TokenKind type;
     std::string value;
 };
 

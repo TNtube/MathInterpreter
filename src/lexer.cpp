@@ -6,37 +6,33 @@
 #include <stdexcept>
 
 
-bool isSpace(char character)
-{
-    switch (character)
+namespace {
+    bool isSpace(char character)
     {
-        case ' ':
-        case '\f':
-        case '\n':
-        case '\r':
-        case '\t':
-        case '\v':
-            return true;
+        switch (character)
+        {
+            case ' ':
+            case '\f':
+            case '\n':
+            case '\r':
+            case '\t':
+            case '\v':
+                return true;
 
-        default:
-            return false;
+            default:
+                return false;
+        }
+    }
+
+    bool isDigit(char character)
+    {
+        return (character >= '0' && character <= '9');
     }
 }
 
-bool isDigit(char character)
-{
-    return (character >= '0' && character <= '9');
-}
-
-
-Lexer::Lexer(std::string & txt)
-        : text(txt)
-        , tokens({})
-{}
-
 
 void Lexer::next(std::string::iterator & actual) {
-    actual++;
+    ++actual;
 }
 
 
@@ -51,35 +47,35 @@ std::vector<Token> Lexer::genTokens() {
             tokens.push_back(genNum(actual));
         }
         else if (*actual == '+') {
-            tokens.push_back(Token{TokenID::T_ADD, "+"});
+            tokens.push_back(Token{TokenKind::T_ADD, "+"});
             next(actual);
         }
         else if (*actual == '-') {
-            tokens.push_back(Token{TokenID::T_SUB,"-"});
+            tokens.push_back(Token{TokenKind::T_SUB, "-"});
             next(actual);
         }
         else if (*actual == '*') {
-            tokens.push_back(Token{TokenID::T_MUL, "*"});
+            tokens.push_back(Token{TokenKind::T_MUL, "*"});
             next(actual);
         }
         else if (*actual == '/') {
-            tokens.push_back(Token{TokenID::T_DIV, "/"});
+            tokens.push_back(Token{TokenKind::T_DIV, "/"});
             next(actual);
         }
         else if (*actual == '^') {
-            tokens.push_back(Token{TokenID::T_POW, "^"});
+            tokens.push_back(Token{TokenKind::T_POW, "^"});
             next(actual);
         }
         else if (*actual == '(') {
-            tokens.push_back(Token{TokenID::T_LPAR, "("});
+            tokens.push_back(Token{TokenKind::T_LPAR, "("});
             next(actual);
         }
         else if (*actual == ')') {
-            tokens.push_back(Token{TokenID::T_RPAR, ")"});
+            tokens.push_back(Token{TokenKind::T_RPAR, ")"});
             next(actual);
         }
         else if (*actual == '!') {
-            tokens.push_back(Token{TokenID::T_FACT, "!"});
+            tokens.push_back(Token{TokenKind::T_FACT, "!"});
             next(actual);
         }
         else {
@@ -93,19 +89,20 @@ std::vector<Token> Lexer::genTokens() {
 }
 
 Token Lexer::genNum(std::string::iterator & actual) {
-    std::string num {};
     int countPoint {};
 
-    while(actual != text.end() && (*actual == '.' || isdigit(*actual))) {
+    auto start = actual;
+    while(actual != text.end() && (*actual == '.' || isDigit(*actual))) {
         if(*actual == '.'){
             countPoint++;
             if (countPoint > 1){
                 break;
             }
         }
-        num.push_back(*actual);
         next(actual);
     }
+
+    std::string num {start, actual};
 
     if (num.front() == '.') {
         num.insert(0, 1, '0');
@@ -114,6 +111,6 @@ Token Lexer::genNum(std::string::iterator & actual) {
         num.push_back('0');
     }
 
-    return Token{TokenID::T_NUM, num};
+    return Token{TokenKind::T_NUM, num};
 }
 

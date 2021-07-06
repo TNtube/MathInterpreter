@@ -10,7 +10,7 @@
 #include <utility>
 
 
-enum NodeKind {
+enum class NodeKind {
     N_NUM,
     N_ADD,
     N_SUB,

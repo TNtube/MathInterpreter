@@ -8,6 +8,7 @@
 #include "nodes.h"
 #include "tokens.h"
 #include <vector>
+#include <stdexcept>
 
 
 class Parser {
@@ -17,11 +18,13 @@ class Parser {
         std::unique_ptr<Node> term(std::vector<Token>::iterator & actual);
         std::unique_ptr<Node> factor(std::vector<Token>::iterator & actual);
         std::unique_ptr<Node> pow(std::vector<Token>::iterator & actual);
-        static void error(std::string const & message);
+        [[noreturn]]static void error(std::string const & message);
         static void next(std::vector<Token>::iterator & actual);
 
     public:
-        explicit Parser(std::vector<Token> & tokens);
+        explicit Parser(std::vector<Token> tokens)
+            : tokenVec(std::move(tokens))
+        {}
         std::unique_ptr<Node> parse();
 };
 
